@@ -3,520 +3,637 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kavish Patel | Portfolio</title>
-    
+    <title>Kavish Patel | Interactive Portfolio</title>
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #1e293b;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #0284c7;
-            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-            --border-color: #334155;
-            --shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-            --card-shadow: 0 4px 20px rgba(0,0,0,0.25);
-        }
-
-        [data-bs-theme="light"] {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-card: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --accent: #0284c7;
-            --accent-hover: #0369a1;
-            --accent-gradient: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
-            --border-color: #e2e8f0;
-            --shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
-            --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            --primary-gradient: linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 100%);
+            --accent-glow: rgba(148, 163, 184, 0.2);
+            --glass-bg-dark: rgba(18, 22, 28, 0.85);
+            --glass-border-dark: rgba(255, 255, 255, 0.08);
+            --glass-bg-light: rgba(241, 245, 249, 0.88);
+            --glass-border-light: rgba(0, 0, 0, 0.12);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
             transition: background-color 0.3s ease, color 0.3s ease;
             overflow-x: hidden;
-        }
-
-        .code-font {
-            font-family: 'Fira Code', monospace;
-        }
-
-        /* Glassmorphism Navbar */
-        .navbar {
-            background-color: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-        [data-bs-theme="light"] .navbar {
-            background-color: rgba(248, 250, 252, 0.85);
-        }
-
-        .nav-link {
-            color: var(--text-secondary) !important;
-            font-weight: 500;
-            transition: color 0.2s ease;
             position: relative;
         }
 
-        .nav-link:hover, .nav-link.active {
-            color: var(--accent) !important;
+        [data-bs-theme="dark"] body {
+            background-color: #0b0d10;
+            color: #e2e8f0;
         }
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 2px;
-            left: 50%;
-            background-color: var(--accent);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
+        [data-bs-theme="light"] body {
+            background-color: #e2e8f0;
+            color: #0f172a;
         }
 
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 80%;
+        /* Background Particle Canvas */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
         }
 
-        /* Theme Toggle Switch */
-        .theme-toggle-btn {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 50px;
-            padding: 6px 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.25);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
         }
 
-        .theme-toggle-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
+        /* Glassmorphism Cards */
+        .glass-card {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        [data-bs-theme="dark"] .glass-card {
+            background: var(--glass-bg-dark);
+            border: 1px solid var(--glass-border-dark);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        [data-bs-theme="light"] .glass-card {
+            background: var(--glass-bg-light);
+            border: 1px solid var(--glass-border-light);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+        }
+
+        [data-bs-theme="dark"] .glass-card:hover {
+            border-color: rgba(148, 163, 184, 0.35);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.7);
+        }
+
+        /* Text Gradients */
+        .text-gradient {
+            background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 50%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        [data-bs-theme="light"] .text-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #334155 50%, #475569 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            color: #fff;
+        }
+
+        /* Navbar */
+        .navbar-custom {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: var(--transition-smooth);
+        }
+
+        [data-bs-theme="dark"] .navbar-custom {
+            background: rgba(11, 13, 16, 0.9);
+            border-bottom: 1px solid var(--glass-border-dark);
+        }
+
+        [data-bs-theme="light"] .navbar-custom {
+            background: rgba(226, 232, 240, 0.9);
+            border-bottom: 1px solid var(--glass-border-light);
+        }
+
+        .nav-link.active {
+            color: #94a3b8 !important;
+            font-weight: 700;
         }
 
         /* Hero Section */
         .hero-section {
             min-height: 100vh;
+            padding-top: 100px;
             display: flex;
             align-items: center;
+        }
+
+        .typing-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Interactive Timeline */
+        .education-timeline {
             position: relative;
-            padding-top: 80px;
-            background: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
+            padding-left: 2rem;
         }
 
-        .text-gradient {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .badge-custom {
-            background-color: rgba(56, 189, 248, 0.15);
-            color: var(--accent);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-weight: 600;
-        }
-
-        .hero-avatar-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-
-        .hero-avatar {
-            width: 280px;
-            height: 280px;
-            border-radius: 30%;
-            object-fit: cover;
-            border: 4px solid var(--accent);
-            box-shadow: var(--shadow);
-            animation: morphShape 8s ease-in-out infinite;
-        }
-
-        @keyframes morphShape {
-            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-        }
-
-        /* Buttons */
-        .btn-accent {
-            background: var(--accent-gradient);
-            color: #ffffff;
-            border: none;
-            font-weight: 600;
-            padding: 12px 28px;
-            border-radius: 12px;
-            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .btn-accent:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
-            color: #ffffff;
-        }
-
-        .btn-outline-custom {
-            border: 2px solid var(--border-color);
-            color: var(--text-primary);
-            font-weight: 600;
-            padding: 10px 26px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-custom:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            background-color: rgba(56, 189, 248, 0.05);
-            transform: translateY(-2px);
-        }
-
-        /* Card Styling */
-        .custom-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            height: 100%;
-        }
-
-        .custom-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-        }
-
-        /* Skills Pill & Progress */
-        .skill-card {
-            padding: 20px;
-            border-radius: 14px;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .skill-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        .progress {
-            height: 8px;
-            border-radius: 10px;
-            background-color: var(--border-color);
-        }
-
-        .progress-bar {
-            background: var(--accent-gradient);
-            border-radius: 10px;
-        }
-
-        /* Filter Buttons */
-        .btn-filter {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            border-radius: 30px;
-            padding: 8px 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-filter.active, .btn-filter:hover {
-            background: var(--accent-gradient);
-            color: #ffffff;
-            border-color: transparent;
-        }
-
-        /* Timeline Styling */
-        .timeline {
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .timeline::before {
+        .education-timeline::before {
             content: '';
             position: absolute;
-            left: 8px;
+            left: 0.6rem;
             top: 0;
             bottom: 0;
             width: 2px;
-            background: var(--border-color);
+            background: linear-gradient(to bottom, #64748b, #334155);
         }
 
         .timeline-item {
             position: relative;
-            margin-bottom: 40px;
+            margin-bottom: 2rem;
+            cursor: pointer;
         }
 
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -30px;
-            top: 4px;
-            width: 18px;
-            height: 18px;
+            left: -1.75rem;
+            top: 0.35rem;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: var(--bg-primary);
-            border: 4px solid var(--accent);
-            box-shadow: 0 0 10px var(--accent);
+            background: #64748b;
+            box-shadow: 0 0 10px rgba(100, 116, 139, 0.6);
+            transition: var(--transition-smooth);
         }
 
-        /* Contact Form Floating Labels */
-        .form-control {
-            background-color: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 10px;
-            padding: 12px 16px;
+        .timeline-item:hover::before {
+            background: #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.8);
+            transform: scale(1.3);
         }
 
-        .form-control:focus {
-            background-color: var(--bg-primary);
-            border-color: var(--accent);
-            color: var(--text-primary);
-            box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25);
+        /* Interactive Terminal Styling */
+        .terminal-window {
+            font-family: 'Fira Code', monospace;
+            background-color: #0d1117;
+            color: #38bdf8;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
-        /* Floating Action Button */
-        .btn-back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--accent-gradient);
-            color: white;
+        .terminal-header {
+            background: #161b22;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .terminal-body {
+            padding: 16px;
+            min-height: 250px;
+            max-height: 350px;
+            overflow-y: auto;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .terminal-input-line input {
+            background: transparent;
             border: none;
+            color: #f8fafc;
+            outline: none;
+            width: 100%;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Chatbot Assistant Bubble */
+        #chatbotWidget {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+        }
+
+        .chat-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #475569, #1e293b);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 999;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
         }
 
-        .btn-back-to-top.show {
-            opacity: 1;
-            visibility: visible;
+        .chat-btn:hover {
+            transform: scale(1.1) rotate(5deg);
         }
 
-        .btn-back-to-top:hover {
-            transform: translateY(-5px);
-            color: white;
+        .chat-box {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 340px;
+            height: 420px;
+            display: none;
+            flex-direction: column;
+            border-radius: 1rem;
+            overflow: hidden;
         }
 
-        /* Social Icons */
+        .chat-box.active {
+            display: flex;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .chat-msg {
+            max-width: 82%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            line-height: 1.4;
+        }
+
+        .chat-msg.bot {
+            background: rgba(51, 65, 85, 0.9);
+            color: #f1f5f9;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-msg.user {
+            background: #38bdf8;
+            color: #0f172a;
+            align-self: flex-end;
+            font-weight: 600;
+            border-bottom-right-radius: 2px;
+        }
+
+        /* Code Playground Interactive Editor */
+        .playground-container {
+            font-family: 'Fira Code', monospace;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .playground-editor textarea {
+            background: #0f172a;
+            color: #38bdf8;
+            border: none;
+            outline: none;
+            width: 100%;
+            height: 180px;
+            padding: 12px;
+            font-size: 0.85rem;
+            resize: vertical;
+        }
+
+        .playground-preview iframe {
+            width: 100%;
+            height: 180px;
+            background: #ffffff;
+            border: none;
+        }
+
+        /* Social Link Buttons */
         .social-link {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition-smooth);
             font-size: 1.1rem;
-            transition: all 0.3s ease;
-            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        [data-bs-theme="dark"] .social-link {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f1f5f9;
+        }
+
+        [data-bs-theme="light"] .social-link {
+            background: rgba(0, 0, 0, 0.06);
+            color: #0f172a;
         }
 
         .social-link:hover {
-            background: var(--accent-gradient);
-            color: #ffffff;
-            border-color: transparent;
+            background: var(--primary-gradient);
+            color: white !important;
             transform: translateY(-3px);
-        }
-
-        /* Section Headings */
-        .section-title {
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 12px;
-        }
-
-        .section-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            max-width: 600px;
-            margin: 0 auto 40px auto;
-        }
-
-        /* Modal Custom Styling */
-        .modal-content {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 20px;
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand fw-bold code-font text-gradient fs-4" href="#hero">
-                &lt;KavishPatel /&gt;
+    <!-- Interactive Background Canvas -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-custom px-3 px-lg-5">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold fs-4 d-flex align-items-center gap-2" href="#home">
+                <span class="p-2 rounded-3 text-white" style="background: var(--primary-gradient); font-size: 1rem;">
+                    <i class="fa-solid fa-terminal"></i>
+                </span>
+                <span class="text-gradient">Kavish Patel</span>
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fa-solid fa-bars text-primary fs-3"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center me-3">
-                    <li class="nav-item"><a class="nav-link px-3" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#skills">Skills</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#projects">Projects</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#education">Education</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#contact">Contact</a></li>
+
+            <div class="d-flex align-items-center gap-2 order-lg-3">
+                <!-- Audio Feedback Toggle -->
+                <button class="btn btn-sm btn-outline-secondary rounded-circle p-2" id="soundToggle" title="Toggle Sound FX" style="width: 38px; height: 38px;">
+                    <i class="fa-solid fa-volume-xmark" id="soundIcon"></i>
+                </button>
+                <!-- Terminal Trigger Button -->
+                <button class="btn btn-sm btn-gradient rounded-pill px-3 py-1 text-white d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#terminalModal">
+                    <i class="fa-solid fa-code small"></i> CLI Mode
+                </button>
+                <!-- Theme Switcher -->
+                <button class="btn btn-sm btn-outline-secondary rounded-circle p-2" id="themeToggle" title="Toggle Theme" style="width: 38px; height: 38px;">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse order-lg-2 justify-content-center" id="navbarNav">
+                <ul class="navbar-nav gap-lg-2 mt-3 mt-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#academic">Academics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills & Tooling</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#playground">Code Lab</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#certificates">Certificates</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 </ul>
-                <div class="d-flex align-items-center mt-3 mt-lg-0">
-                    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle theme">
-                        <i class="fa-solid fa-moon me-2" id="themeIcon"></i>
-                        <span id="themeText">Dark</span>
-                    </button>
-                </div>
             </div>
         </div>
     </nav>
 
-    <section id="hero" class="hero-section">
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
         <div class="container">
             <div class="row align-items-center gy-5">
                 <div class="col-lg-7">
-                    <span class="badge badge-custom mb-3">
-                        <i class="fa-solid fa-graduation-cap me-2"></i>Indus University - CSE
-                    </span>
-                    <h1 class="display-3 fw-bold mb-3">
-                        Hi, I'm <span class="text-gradient">Kavish Patel</span>
-                    </h1>
-                    <h2 class="h3 text-secondary mb-4 code-font">
-                        <span id="typingEffect"></span><span class="text-accent">|</span>
-                    </h2>
-                    <p class="lead text-secondary mb-4 pe-lg-4">
-                        Passionate Computer Science & Engineering student focused on building modern web applications, scalable software architectures, and clean user-centered solutions.
-                    </p>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="#projects" class="btn btn-accent">
-                            <i class="fa-solid fa-rocket me-2"></i>View Projects
-                        </a>
-                        <a href="#contact" class="btn btn-outline-custom">
-                            <i class="fa-solid fa-envelope me-2"></i>Contact Me
-                        </a>
-                        <button class="btn btn-outline-custom" onclick="downloadResume()">
-                            <i class="fa-solid fa-file-arrow-down me-2"></i>Resume
-                        </button>
-                    </div>
-                    <div class="mt-5 d-flex align-items-center gap-3">
-                        <span class="small text-secondary fw-semibold">Connect with me:</span>
-                        <a href="https://github.com" target="_blank" class="social-link" title="GitHub"><i class="fa-brands fa-github"></i></a>
-                        <a href="https://linkedin.com" target="_blank" class="social-link" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="mailto:kavish.patel@example.com" class="social-link" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                    <div>
+                        <span class="badge bg-secondary bg-opacity-25 text-body border border-secondary border-opacity-25 rounded-pill px-3 py-2 mb-3 d-inline-flex align-items-center gap-2">
+                            <span class="spinner-grow spinner-grow-sm text-success" role="status"></span>
+                            Indus University • B.Tech CSE Student
+                        </span>
+                        <h1 class="display-3 fw-extrabold mb-3 lh-sm">
+                            Hi, I'm <br><span class="text-gradient">Kavish Patel</span>
+                        </h1>
+                        <h3 class="h4 text-body-secondary mb-4">
+                            I am <span class="typing-text text-primary fw-bold" id="typingElement"></span>
+                        </h3>
+                        <p class="lead text-body-secondary mb-4 fs-6">
+                            Computer Science Engineering student at <strong>Indus University</strong> specializing in Full-Stack Web Development. Passionate about building performant applications, clean architectures, and modern web software.
+                        </p>
+                        
+                        <div class="d-flex flex-wrap gap-3 mb-4">
+                            <a href="#contact" class="btn btn-gradient btn-lg px-4 py-2 rounded-pill fw-semibold fs-6">
+                                <i class="fa-solid fa-paper-plane me-2"></i>Contact Kavish
+                            </a>
+                            <button class="btn btn-outline-secondary btn-lg px-4 py-2 rounded-pill fw-semibold fs-6" data-bs-toggle="modal" data-bs-target="#recruiterModal">
+                                <i class="fa-solid fa-sliders me-2"></i>Recruiter Skill Match
+                            </button>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="small text-body-secondary fw-semibold">Quick Channels:</span>
+                            <a href="https://github.com" target="_blank" class="social-link" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                            <a href="https://linkedin.com" target="_blank" class="social-link" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="mailto:kavishpatel@indusuni.ac.in" class="social-link" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
                     </div>
                 </div>
+
                 <div class="col-lg-5 text-center">
-                    <div class="hero-avatar-wrapper">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" 
-                             alt="Kavish Patel" 
-                             class="hero-avatar img-fluid"
-                             onerror="this.src='https://placehold.co/400x400/1e293b/38bdf8?text=KP'">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="py-5">
-        <div class="container py-5">
-            <div class="text-center">
-                <h2 class="section-title h1">About <span class="text-gradient">Me</span></h2>
-                <p class="section-subtitle">Dedicated to continuous learning, clean engineering, and solving real-world problems through code.</p>
-            </div>
-            
-            <div class="row gy-4 align-items-center">
-                <div class="col-lg-6">
-                    <div class="custom-card p-4 p-md-5">
-                        <h3 class="h4 fw-bold mb-3"><i class="fa-solid fa-laptop-code text-gradient me-2"></i>Engineering & Passion</h3>
-                        <p class="text-secondary leading-relaxed">
-                            I am currently pursuing my Bachelor of Technology in <strong>Computer Science & Engineering at Indus University</strong>. My journey into programming started with a curiosity about how digital systems work, which quickly evolved into a strong commitment to full-stack software development.
-                        </p>
-                        <p class="text-secondary leading-relaxed">
-                            I enjoy building full-stack web applications, exploring algorithmic efficiency in Data Structures, and collaborating on technological innovations. When I am not coding, I am constantly researching modern web frameworks and refining my project portfolio.
-                        </p>
-                        <div class="row pt-3 g-3 text-center">
-                            <div class="col-4">
-                                <div class="p-3 rounded-3 bg-opacity-10 bg-primary">
-                                    <h4 class="fw-bold text-gradient mb-1">10+</h4>
-                                    <small class="text-secondary">Projects Built</small>
+                    <div class="glass-card p-4 p-md-5 text-center position-relative">
+                        <div class="mb-3 position-relative d-inline-block">
+                            <div class="rounded-circle p-1 bg-gradient d-inline-block" style="background: var(--primary-gradient);">
+                                <div class="rounded-circle bg-dark overflow-hidden d-flex align-items-center justify-content-center" style="width: 130px; height: 130px;">
+                                    <i class="fa-solid fa-user-gear display-3 text-light opacity-75"></i>
                                 </div>
                             </div>
-                            <div class="col-4">
-                                <div class="p-3 rounded-3 bg-opacity-10 bg-primary">
-                                    <h4 class="fw-bold text-gradient mb-1">6+</h4>
-                                    <small class="text-secondary">Languages</small>
+                        </div>
+                        <h4 class="fw-bold mb-1">Kavish Patel</h4>
+                        <p class="text-body-secondary small mb-3">Indus University • B.Tech CSE</p>
+                        
+                        <!-- Interactive Quick Stats Cards -->
+                        <div class="row g-2 text-start">
+                            <div class="col-6">
+                                <div class="p-2 rounded glass-card text-center cursor-pointer" onclick="scrollToSection('academic')">
+                                    <div class="small text-body-secondary">Latest CGPA</div>
+                                    <div class="fw-bold text-gradient fs-5">6.58 / 10</div>
                                 </div>
                             </div>
-                            <div class="col-4">
-                                <div class="p-3 rounded-3 bg-opacity-10 bg-primary">
-                                    <h4 class="fw-bold text-gradient mb-1">8.5+</h4>
-                                    <small class="text-secondary">Academic CPI</small>
+                            <div class="col-6">
+                                <div class="p-2 rounded glass-card text-center cursor-pointer" onclick="scrollToSection('certificates')">
+                                    <div class="small text-body-secondary">Bootcamp</div>
+                                    <div class="fw-bold text-success fs-5">61.5 Hours</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 rounded glass-card text-center">
+                                    <div class="small text-body-secondary">10th Grade</div>
+                                    <div class="fw-bold text-info fs-5">75%</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 rounded glass-card text-center">
+                                    <div class="small text-body-secondary">12th Grade</div>
+                                    <div class="fw-bold text-warning fs-5">60%</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="col-lg-6">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="custom-card p-4">
-                                <div class="fs-2 text-gradient mb-3"><i class="fa-solid fa-code"></i></div>
-                                <h5 class="fw-bold mb-2">Clean Code</h5>
-                                <p class="text-secondary small mb-0">Writing maintainable, well-documented, and efficient code following modern software principles.</p>
+    <!-- About & Interactive Academic Section -->
+    <section id="academic" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="text-uppercase tracking-wider text-primary fw-bold small">Academic Portfolio</span>
+                <h2 class="display-6 fw-bold">Education & Grade Metrics</h2>
+                <div class="mx-auto mt-2" style="width: 60px; height: 4px; background: var(--primary-gradient); border-radius: 2px;"></div>
+            </div>
+
+            <div class="row gy-4">
+                <!-- Timeline Interactive Cards -->
+                <div class="col-lg-7">
+                    <div class="education-timeline">
+                        
+                        <!-- B.Tech CSE -->
+                        <div class="timeline-item" onclick="toggleAcademicDetail('btechDetail')">
+                            <div class="glass-card p-4">
+                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                                    <div>
+                                        <h4 class="fw-bold mb-1">B.Tech in Computer Science & Engineering</h4>
+                                        <h6 class="text-primary fw-semibold mb-0">Indus University</h6>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill px-3 py-1">Undergraduate</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 mt-3">
+                                    <div class="p-2 rounded bg-primary bg-opacity-10 text-primary fw-bold small">
+                                        <i class="fa-solid fa-chart-line me-1"></i> Semester CGPA: 6.58
+                                    </div>
+                                    <span class="small text-body-secondary"><i class="fa-solid fa-circle-info me-1"></i> Click to expand modules</span>
+                                </div>
+                                
+                                <div id="btechDetail" class="mt-3 pt-3 border-top border-secondary border-opacity-25 d-none">
+                                    <h6 class="fw-bold small text-uppercase text-body-secondary mb-2">Core Technical Coursework:</h6>
+                                    <div class="d-flex flex-wrap gap-1 mb-2">
+                                        <span class="badge bg-secondary bg-opacity-25 text-body small">Data Structures & Algorithms</span>
+                                        <span class="badge bg-secondary bg-opacity-25 text-body small">Object-Oriented Programming</span>
+                                        <span class="badge bg-secondary bg-opacity-25 text-body small">Database Management Systems</span>
+                                        <span class="badge bg-secondary bg-opacity-25 text-body small">Web Technologies</span>
+                                        <span class="badge bg-secondary bg-opacity-25 text-body small">Computer Networks</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="custom-card p-4">
-                                <div class="fs-2 text-gradient mb-3"><i class="fa-solid fa-layer-group"></i></div>
-                                <h5 class="fw-bold mb-2">Full Stack Mindset</h5>
-                                <p class="text-secondary small mb-0">Hands-on experience bridging responsive frontend designs with scalable backend logic.</p>
+
+                        <!-- 12th Standard -->
+                        <div class="timeline-item" onclick="toggleAcademicDetail('hscDetail')">
+                            <div class="glass-card p-4">
+                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                                    <div>
+                                        <h4 class="fw-bold mb-1">12th Grade (Higher Secondary - HSC)</h4>
+                                        <h6 class="text-body-secondary fw-semibold mb-0">Science Stream (PCM)</h6>
+                                    </div>
+                                    <span class="badge bg-secondary rounded-pill px-3 py-1">60%</span>
+                                </div>
+                                <div id="hscDetail" class="mt-3 pt-3 border-top border-secondary border-opacity-25 d-none">
+                                    <p class="small text-body-secondary mb-0">Focused on Higher Secondary Physics, Chemistry, and Advanced Mathematics, forming core analytical and logical foundations.</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="custom-card p-4">
-                                <div class="fs-2 text-gradient mb-3"><i class="fa-solid fa-lightbulb"></i></div>
-                                <h5 class="fw-bold mb-2">Problem Solving</h5>
-                                <p class="text-secondary small mb-0">Strong understanding of core Data Structures, Object-Oriented paradigms, and Algorithms.</p>
+
+                        <!-- 10th Standard -->
+                        <div class="timeline-item" onclick="toggleAcademicDetail('sscDetail')">
+                            <div class="glass-card p-4">
+                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                                    <div>
+                                        <h4 class="fw-bold mb-1">10th Grade (Secondary School - SSC)</h4>
+                                        <h6 class="text-body-secondary fw-semibold mb-0">Secondary Education Board</h6>
+                                    </div>
+                                    <span class="badge bg-success rounded-pill px-3 py-1">75%</span>
+                                </div>
+                                <div id="sscDetail" class="mt-3 pt-3 border-top border-secondary border-opacity-25 d-none">
+                                    <p class="small text-body-secondary mb-0">Graduated with 75% overall score with distinction in Mathematics and Science fundamentals.</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="custom-card p-4">
-                                <div class="fs-2 text-gradient mb-3"><i class="fa-solid fa-users-gear"></i></div>
-                                <h5 class="fw-bold mb-2">Collaboration</h5>
-                                <p class="text-secondary small mb-0">Proficient in Git workflows, team-based academic projects, and agile development concepts.</p>
+
+                    </div>
+                </div>
+
+                <!-- Interactive Academic Calculator & Progress Rings -->
+                <div class="col-lg-5">
+                    <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <h4 class="fw-bold mb-3"><i class="fa-solid fa-calculator me-2 text-primary"></i>Grade Metric Summary</h4>
+                            <p class="small text-body-secondary mb-4">Interactive representation of Kavish's academic trajectory and aggregate performance.</p>
+
+                            <!-- Progress Bars -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="fw-semibold">10th SSC Grade</span>
+                                    <span class="fw-bold text-success">75%</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="fw-semibold">12th HSC Grade</span>
+                                    <span class="fw-bold text-warning">60%</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 60%"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="fw-semibold">B.Tech Last Sem CGPA</span>
+                                    <span class="fw-bold text-primary">6.58 / 10 (65.8%)</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 65.8%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Grade Converter Widget -->
+                        <div class="p-3 rounded glass-card border border-secondary border-opacity-25 bg-body-tertiary">
+                            <h6 class="fw-bold mb-2 small"><i class="fa-solid fa-sliders me-1"></i> Interactive CGPA-to-Percentage Simulator</h6>
+                            <label for="cgpaSlider" class="form-label small text-body-secondary mb-1">Slide CGPA value:</label>
+                            <input type="range" class="form-range" id="cgpaSlider" min="0" max="10" step="0.01" value="6.58" oninput="updateCgpaCalc(this.value)">
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span class="small fw-bold">CGPA: <span id="cgpaVal" class="text-primary">6.58</span></span>
+                                <span class="small fw-bold">Equivalent Percentage: <span id="percVal" class="text-success">62.51%</span></span>
                             </div>
                         </div>
                     </div>
@@ -525,287 +642,140 @@
         </div>
     </section>
 
-    <section id="skills" class="py-5 bg-opacity-50" style="background-color: var(--bg-secondary);">
-        <div class="container py-5">
-            <div class="text-center">
-                <h2 class="section-title h1">Skills & <span class="text-gradient">Tech Stack</span></h2>
-                <p class="section-subtitle">Programming languages, tools, and frameworks I work with regularly.</p>
+    <!-- Skills Section -->
+    <section id="skills" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="text-uppercase tracking-wider text-primary fw-bold small">Technical Competencies</span>
+                <h2 class="display-6 fw-bold">Interactive Skills Stack</h2>
+                <div class="mx-auto mt-2" style="width: 60px; height: 4px; background: var(--primary-gradient); border-radius: 2px;"></div>
             </div>
 
-            <!-- Language Cards -->
-            <div class="row g-4 mb-5">
-                <div class="col-12"><h4 class="fw-bold mb-3"><i class="fa-solid fa-terminal text-gradient me-2"></i>Programming Languages</h4></div>
-                
-                <div class="col-md-6 col-lg-4">
-                    <div class="skill-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="fw-bold"><i class="fa-brands fa-python me-2 text-warning"></i>Python</span>
-                            <span class="text-secondary code-font">85%</span>
-                        </div>
-                        <div class="progress"><div class="progress-bar" style="width: 85%"></div></div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="skill-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="fw-bold"><i class="fa-brands fa-js me-2 text-warning"></i>JavaScript</span>
-                            <span class="text-secondary code-font">88%</span>
-                        </div>
-                        <div class="progress"><div class="progress-bar" style="width: 88%"></div></div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="skill-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="fw-bold"><i class="fa-brands fa-java me-2 text-danger"></i>Java</span>
-                            <span class="text-secondary code-font">80%</span>
-                        </div>
-                        <div class="progress"><div class="progress-bar" style="width: 80%"></div></div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="skill-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="fw-bold"><i class="fa-solid fa-code me-2 text-info"></i>C / C++</span>
-                            <span class="text-secondary code-font">82%</span>
-                        </div>
-                        <div class="progress"><div class="progress-bar" style="width: 82%"></div></div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="skill-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="fw-bold"><i class="fa-brands fa-html5 me-2 text-danger"></i>HTML5 / CSS3</span>
-                            <span class="text-secondary code-font">92%</span>
-                        </div>
-                        <div class="progress"><div class="progress-bar" style="width: 92%"></div></div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="skill-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="fw-bold"><i class="fa-solid fa-database me-2 text-primary"></i>SQL (MySQL)</span>
-                            <span class="text-secondary code-font">84%</span>
-                        </div>
-                        <div class="progress"><div class="progress-bar" style="width: 84%"></div></div>
+            <!-- Interactive Skill Search & Category Filter -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text glass-card border-secondary border-opacity-25"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" id="skillSearch" class="form-control glass-card border-secondary border-opacity-25" placeholder="Search skill (e.g. React, Node, SQL, Git)..." onkeyup="filterSkills()">
                     </div>
                 </div>
             </div>
 
-            <!-- Frameworks & Tools Grid -->
-            <div class="row g-4">
-                <div class="col-12"><h4 class="fw-bold mb-3"><i class="fa-solid fa-screwdriver-wrench text-gradient me-2"></i>Frameworks & Developer Tools</h4></div>
-                <div class="col-12">
-                    <div class="d-flex flex-wrap gap-2">
-                        <span class="badge custom-card p-3 fs-6 font-normal"><i class="fa-brands fa-react me-2 text-info"></i>React.js</span>
-                        <span class="badge custom-card p-3 fs-6"><i class="fa-brands fa-node-js me-2 text-success"></i>Node.js</span>
-                        <span class="badge custom-card p-3 fs-6"><i class="fa-brands fa-bootstrap me-2 text-primary"></i>Bootstrap 5</span>
-                        <span class="badge custom-card p-3 fs-6"><i class="fa-brands fa-git-alt me-2 text-danger"></i>Git & GitHub</span>
-                        <span class="badge custom-card p-3 fs-6"><i class="fa-solid fa-server me-2 text-warning"></i>Express.js</span>
-                        <span class="badge custom-card p-3 fs-6"><i class="fa-solid fa-vial me-2 text-secondary"></i>VS Code</span>
-                        <span class="badge custom-card p-3 fs-6"><i class="fa-solid fa-cubes me-2 text-info"></i>RESTful APIs</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="py-5">
-        <div class="container py-5">
-            <div class="text-center">
-                <h2 class="section-title h1">Featured <span class="text-gradient">Projects</span></h2>
-                <p class="section-subtitle">A showcase of software systems, web applications, and academic projects I have developed.</p>
-                
-                <!-- Filter Controls -->
-                <div class="d-flex justify-content-center flex-wrap mb-4">
-                    <button class="btn-filter active" onclick="filterProjects('all')">All</button>
-                    <button class="btn-filter" onclick="filterProjects('web')">Web Apps</button>
-                    <button class="btn-filter" onclick="filterProjects('software')">Software</button>
-                    <button class="btn-filter" onclick="filterProjects('ai')">AI / Utility</button>
-                </div>
-            </div>
-
-            <div class="row g-4" id="projectsContainer">
-                <!-- Project 1 -->
-                <div class="col-md-6 col-lg-6 project-item" data-category="web">
-                    <div class="custom-card overflow-hidden d-flex flex-column">
-                        <div class="p-4 flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-primary bg-opacity-10 text-accent px-3 py-2 rounded-pill">Web Application</span>
-                                <small class="text-secondary code-font">2026</small>
-                            </div>
-                            <h3 class="h4 fw-bold mb-3">Campus Student Management System</h3>
-                            <p class="text-secondary mb-4">
-                                A full-stack web application designed for educational institutions to streamline student registration, grade tracking, course enrollments, and faculty scheduling.
-                            </p>
-                            <div class="d-flex flex-wrap gap-2 mb-4">
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">HTML5/CSS3</span>
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">JavaScript</span>
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">Node.js</span>
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">MySQL</span>
-                            </div>
-                        </div>
-                        <div class="p-4 border-top border-secondary border-opacity-20 d-flex gap-2">
-                            <button class="btn btn-sm btn-accent flex-grow-1" onclick="openProjectModal('Campus Student Management System', 'A comprehensive portal designed for Indus University style campus operations. Features role-based access control (Admin, Student, Faculty), real-time grade calculations, attendance monitoring, and automated report generation.', ['HTML5', 'Bootstrap 5', 'Node.js', 'MySQL'])">
-                                <i class="fa-solid fa-circle-info me-1"></i> Details
-                            </button>
-                            <a href="https://github.com" target="_blank" class="btn btn-sm btn-outline-custom">
-                                <i class="fa-brands fa-github me-1"></i> Code
-                            </a>
-                        </div>
+            <div class="row g-4" id="skillsGrid">
+                <!-- HTML / CSS -->
+                <div class="col-6 col-md-4 col-lg-3 skill-card-item" data-skill="html css frontend bootstrap">
+                    <div class="glass-card p-3 text-center h-100">
+                        <i class="fa-brands fa-html5 display-5 text-danger mb-2"></i>
+                        <h6 class="fw-bold mb-1">HTML5 & CSS3</h6>
+                        <div class="small text-body-secondary">Responsive Layouts</div>
                     </div>
                 </div>
 
-                <!-- Project 2 -->
-                <div class="col-md-6 col-lg-6 project-item" data-category="ai">
-                    <div class="custom-card overflow-hidden d-flex flex-column">
-                        <div class="p-4 flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-primary bg-opacity-10 text-accent px-3 py-2 rounded-pill">AI & Utility</span>
-                                <small class="text-secondary code-font">2025</small>
-                            </div>
-                            <h3 class="h4 fw-bold mb-3">Smart AI Task Planner & Scheduler</h3>
-                            <p class="text-secondary mb-4">
-                                An intelligent productivity application that uses heuristic algorithms to prioritize user tasks based on deadlines, effort levels, and calendar availability.
-                            </p>
-                            <div class="d-flex flex-wrap gap-2 mb-4">
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">Python</span>
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">React</span>
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">REST API</span>
-                            </div>
-                        </div>
-                        <div class="p-4 border-top border-secondary border-opacity-20 d-flex gap-2">
-                            <button class="btn btn-sm btn-accent flex-grow-1" onclick="openProjectModal('Smart AI Task Planner & Scheduler', 'An AI-driven task management system helping engineering students optimize study hours and project milestones. Includes automated task breakdown and visual progress analytics.', ['Python', 'Flask', 'React.js', 'Tailwind CSS'])">
-                                <i class="fa-solid fa-circle-info me-1"></i> Details
-                            </button>
-                            <a href="https://github.com" target="_blank" class="btn btn-sm btn-outline-custom">
-                                <i class="fa-brands fa-github me-1"></i> Code
-                            </a>
-                        </div>
+                <!-- JavaScript -->
+                <div class="col-6 col-md-4 col-lg-3 skill-card-item" data-skill="javascript js es6 frontend logic">
+                    <div class="glass-card p-3 text-center h-100">
+                        <i class="fa-brands fa-js display-5 text-warning mb-2"></i>
+                        <h6 class="fw-bold mb-1">JavaScript (ES6+)</h6>
+                        <div class="small text-body-secondary">Async, DOM, APIs</div>
                     </div>
                 </div>
 
-                <!-- Project 3 -->
-                <div class="col-md-6 col-lg-6 project-item" data-category="web">
-                    <div class="custom-card overflow-hidden d-flex flex-column">
-                        <div class="p-4 flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-primary bg-opacity-10 text-accent px-3 py-2 rounded-pill">Web Platform</span>
-                                <small class="text-secondary code-font">2025</small>
-                            </div>
-                            <h3 class="h4 fw-bold mb-3">DevStack E-Commerce Store</h3>
-                            <p class="text-secondary mb-4">
-                                Responsive e-commerce web platform for developer gadgets and merchandise with dynamic cart updates, product search filters, and checkout simulation.
-                            </p>
-                            <div class="d-flex flex-wrap gap-2 mb-4">
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">JavaScript</span>
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">Bootstrap 5</span>
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">LocalStorage API</span>
-                            </div>
-                        </div>
-                        <div class="p-4 border-top border-secondary border-opacity-20 d-flex gap-2">
-                            <button class="btn btn-sm btn-accent flex-grow-1" onclick="openProjectModal('DevStack E-Commerce Store', 'Modular e-commerce store with seamless dark/light theme integration, interactive filtering, persistent cart state using browser storage, and crisp UI components.', ['JavaScript (ES6+)', 'Bootstrap 5', 'HTML5', 'CSS3'])">
-                                <i class="fa-solid fa-circle-info me-1"></i> Details
-                            </button>
-                            <a href="https://github.com" target="_blank" class="btn btn-sm btn-outline-custom">
-                                <i class="fa-brands fa-github me-1"></i> Code
-                            </a>
-                        </div>
+                <!-- Bootstrap 5 -->
+                <div class="col-6 col-md-4 col-lg-3 skill-card-item" data-skill="bootstrap css framework responsive">
+                    <div class="glass-card p-3 text-center h-100">
+                        <i class="fa-brands fa-bootstrap display-5 style-purple mb-2" style="color: #a855f7;"></i>
+                        <h6 class="fw-bold mb-1">Bootstrap 5</h6>
+                        <div class="small text-body-secondary">UI Grid System</div>
                     </div>
                 </div>
 
-                <!-- Project 4 -->
-                <div class="col-md-6 col-lg-6 project-item" data-category="software">
-                    <div class="custom-card overflow-hidden d-flex flex-column">
-                        <div class="p-4 flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-primary bg-opacity-10 text-accent px-3 py-2 rounded-pill">Software Utility</span>
-                                <small class="text-secondary code-font">2024</small>
-                            </div>
-                            <h3 class="h4 fw-bold mb-3">Algorithm Visualizer Engine</h3>
-                            <p class="text-secondary mb-4">
-                                Interactive sorting and pathfinding visualizer built to demonstrate array manipulation algorithms (Bubble Sort, Quick Sort, Dijkstra) step by step.
-                            </p>
-                            <div class="d-flex flex-wrap gap-2 mb-4">
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">C++</span>
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">JavaScript</span>
-                                <span class="badge bg-secondary bg-opacity-20 text-secondary">HTML Canvas</span>
-                            </div>
-                        </div>
-                        <div class="p-4 border-top border-secondary border-opacity-20 d-flex gap-2">
-                            <button class="btn btn-sm btn-accent flex-grow-1" onclick="openProjectModal('Algorithm Visualizer Engine', 'An educational tool built for Computer Science students to visualize fundamental Data Structures and Algorithms with speed control, step-by-step Execution, and time complexity badges.', ['C++', 'JavaScript', 'HTML5 Canvas'])">
-                                <i class="fa-solid fa-circle-info me-1"></i> Details
-                            </button>
-                            <a href="https://github.com" target="_blank" class="btn btn-sm btn-outline-custom">
-                                <i class="fa-brands fa-github me-1"></i> Code
-                            </a>
-                        </div>
+                <!-- Node.js & Express -->
+                <div class="col-6 col-md-4 col-lg-3 skill-card-item" data-skill="node express backend javascript server">
+                    <div class="glass-card p-3 text-center h-100">
+                        <i class="fa-brands fa-node-js display-5 text-success mb-2"></i>
+                        <h6 class="fw-bold mb-1">Node.js / Express</h6>
+                        <div class="small text-body-secondary">REST APIs & Server</div>
+                    </div>
+                </div>
+
+                <!-- PostgreSQL -->
+                <div class="col-6 col-md-4 col-lg-3 skill-card-item" data-skill="postgresql sql database backend query">
+                    <div class="glass-card p-3 text-center h-100">
+                        <i class="fa-solid fa-database display-5 text-primary mb-2"></i>
+                        <h6 class="fw-bold mb-1">PostgreSQL</h6>
+                        <div class="small text-body-secondary">Relational DB</div>
+                    </div>
+                </div>
+
+                <!-- MongoDB -->
+                <div class="col-6 col-md-4 col-lg-3 skill-card-item" data-skill="mongodb nosql database backend">
+                    <div class="glass-card p-3 text-center h-100">
+                        <i class="fa-solid fa-envira display-5 text-success mb-2"></i>
+                        <h6 class="fw-bold mb-1">MongoDB</h6>
+                        <div class="small text-body-secondary">NoSQL Document DB</div>
+                    </div>
+                </div>
+
+                <!-- React -->
+                <div class="col-6 col-md-4 col-lg-3 skill-card-item" data-skill="react frontend framework jsx">
+                    <div class="glass-card p-3 text-center h-100">
+                        <i class="fa-brands fa-react display-5 text-info mb-2"></i>
+                        <h6 class="fw-bold mb-1">React.js</h6>
+                        <div class="small text-body-secondary">Component UI</div>
+                    </div>
+                </div>
+
+                <!-- Git & GitHub -->
+                <div class="col-6 col-md-4 col-lg-3 skill-card-item" data-skill="git github version control tools">
+                    <div class="glass-card p-3 text-center h-100">
+                        <i class="fa-brands fa-github display-5 text-light mb-2"></i>
+                        <h6 class="fw-bold mb-1">Git & GitHub</h6>
+                        <div class="small text-body-secondary">Version Control</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="education" class="py-5 bg-opacity-50" style="background-color: var(--bg-secondary);">
-        <div class="container py-5">
-            <div class="text-center">
-                <h2 class="section-title h1">Education & <span class="text-gradient">Journey</span></h2>
-                <p class="section-subtitle">Academic achievements, degree details, and key milestones in CSE.</p>
+    <!-- Code Playground Section -->
+    <section id="playground" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="text-uppercase tracking-wider text-primary fw-bold small">Live Interactive Sandbox</span>
+                <h2 class="display-6 fw-bold">Embedded Code Playground</h2>
+                <p class="text-body-secondary small">Test and edit code right inside Kavish's portfolio!</p>
+                <div class="mx-auto mt-2" style="width: 60px; height: 4px; background: var(--primary-gradient); border-radius: 2px;"></div>
             </div>
 
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="timeline">
-                        <!-- Education Item 1 -->
-                        <div class="timeline-item">
-                            <div class="custom-card p-4">
-                                <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
-                                    <h3 class="h4 fw-bold mb-0">B.Tech in Computer Science & Engineering</h3>
-                                    <span class="badge bg-primary bg-opacity-10 text-accent fs-6">2023 - Present</span>
-                                </div>
-                                <h5 class="text-gradient mb-3"><i class="fa-solid fa-university me-2"></i>Indus University, Ahmedabad</h5>
-                                <p class="text-secondary mb-3">
-                                    Pursuing undergraduate degree in CSE with a focus on core software fundamentals, practical lab training, object-oriented concepts, and enterprise software engineering.
-                                </p>
-                                <div class="row g-2 text-secondary small">
-                                    <div class="col-md-6"><i class="fa-solid fa-check text-accent me-2"></i><strong>Key Coursework:</strong> Data Structures & Algorithms, Operating Systems</div>
-                                    <div class="col-md-6"><i class="fa-solid fa-check text-accent me-2"></i><strong>Database Systems:</strong> Relational Databases, SQL, Query Optimization</div>
-                                    <div class="col-md-6"><i class="fa-solid fa-check text-accent me-2"></i><strong>Web Engineering:</strong> Full-stack development, REST architectures</div>
-                                    <div class="col-md-6"><i class="fa-solid fa-check text-accent me-2"></i><strong>Software Methodologies:</strong> Agile, SDLC, Git Version Control</div>
-                                </div>
-                            </div>
+                    <div class="glass-card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="fw-bold text-gradient"><i class="fa-solid fa-flask me-2"></i>Interactive HTML/JS Preview Runner</span>
+                            <button class="btn btn-sm btn-gradient" onclick="runPlaygroundCode()">
+                                <i class="fa-solid fa-play me-1"></i> Run Code
+                            </button>
                         </div>
 
-                        <!-- Certification Item 2 -->
-                        <div class="timeline-item">
-                            <div class="custom-card p-4">
-                                <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
-                                    <h3 class="h4 fw-bold mb-0">Full-Stack Web Development Certification</h3>
-                                    <span class="badge bg-primary bg-opacity-10 text-accent fs-6">2024</span>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-body-secondary">Editable Source Code:</label>
+                                <div class="playground-container">
+                                    <textarea id="codeEditor" spellcheck="false"><!-- Interactive Demo -->
+<div style="font-family: sans-serif; text-align: center; padding: 20px; color: #1e293b;">
+  <h3 style="color: #3b82f6;">Hello from Kavish's Portfolio!</h3>
+  <p>Student at Indus University | B.Tech CSE</p>
+  <button onclick="alert('Greetings! Kavish Patel welcome you to his portfolio.')" style="padding: 8px 16px; background: #334155; color: white; border: none; border-radius: 6px; cursor: pointer;">
+    Click Me!
+  </button>
+</div></textarea>
                                 </div>
-                                <h5 class="text-gradient mb-2"><i class="fa-solid fa-certificate me-2"></i>Online Professional Specialization</h5>
-                                <p class="text-secondary mb-0">
-                                    Completed rigorous online training in modern frontend frameworks (React, Bootstrap), asynchronous JavaScript programming, and database backend integration.
-                                </p>
                             </div>
-                        </div>
-
-                        <!-- Schooling Item 3 -->
-                        <div class="timeline-item">
-                            <div class="custom-card p-4">
-                                <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
-                                    <h3 class="h4 fw-bold mb-0">Higher Secondary Education (Class XII - Science)</h3>
-                                    <span class="badge bg-primary bg-opacity-10 text-accent fs-6">2021 - 2023</span>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-body-secondary">Live Output Preview:</label>
+                                <div class="playground-preview glass-card overflow-hidden">
+                                    <iframe id="codePreview"></iframe>
                                 </div>
-                                <h5 class="text-gradient mb-2"><i class="fa-solid fa-school me-2"></i>GSEB / CBSE Board</h5>
-                                <p class="text-secondary mb-0">
-                                    Specialized in Physics, Chemistry, and Higher Mathematics with distinction, laying the mathematical foundation for computer science engineering.
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -814,81 +784,133 @@
         </div>
     </section>
 
-    <section id="contact" class="py-5">
-        <div class="container py-5">
-            <div class="text-center">
-                <h2 class="section-title h1">Get In <span class="text-gradient">Touch</span></h2>
-                <p class="section-subtitle">Have a question or want to collaborate on a project? Feel free to send a message!</p>
+    <!-- Certificate Verification Section -->
+    <section id="certificates" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="text-uppercase tracking-wider text-primary fw-bold small">Verified Credential</span>
+                <h2 class="display-6 fw-bold">Certificates & Verification</h2>
+                <div class="mx-auto mt-2" style="width: 60px; height: 4px; background: var(--primary-gradient); border-radius: 2px;"></div>
             </div>
 
-            <div class="row gy-5">
-                <div class="col-lg-5">
-                    <div class="custom-card p-4 p-md-5 h-100 d-flex flex-column justify-content-between">
-                        <div>
-                            <h3 class="h4 fw-bold mb-4">Contact Details</h3>
-                            
-                            <div class="d-flex align-items-center mb-4">
-                                <div class="social-link me-3 bg-primary bg-opacity-10 text-accent"><i class="fa-solid fa-envelope"></i></div>
-                                <div>
-                                    <small class="text-secondary d-block">Email Me</small>
-                                    <a href="mailto:kavish.patel@example.com" class="text-decoration-none fw-semibold text-primary">kavish.patel@indusuni.ac.in</a>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="glass-card p-4 p-md-5">
+                        <div class="row align-items-center gy-4">
+                            <div class="col-lg-7">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="badge bg-danger"><i class="fa-solid fa-graduation-cap me-1"></i> Udemy Certified</span>
+                                    <span class="badge bg-success">Verified Credentials</span>
+                                </div>
+
+                                <h3 class="h4 fw-bold mb-2">The Complete Full-Stack Web Development Bootcamp</h3>
+                                <p class="text-body-secondary small mb-3">Taught by <strong>Dr. Angela Yu</strong>, Lead Developer & Instructor.</p>
+
+                                <ul class="list-unstyled small text-body-secondary d-flex flex-column gap-2 mb-4">
+                                    <li><i class="fa-solid fa-check text-success me-2"></i>Completed <strong>61.5 total hours</strong> of intensive coursework.</li>
+                                    <li><i class="fa-solid fa-check text-success me-2"></i>Issued on <strong>Sept. 14, 2025</strong>.</li>
+                                    <li><i class="fa-solid fa-check text-success me-2"></i>Credential Reference: <strong>000A</strong></li>
+                                </ul>
+
+                                <!-- Interactive Verification Tool -->
+                                <div class="p-3 rounded glass-card border border-secondary border-opacity-25 bg-body-tertiary">
+                                    <label class="form-label small fw-bold mb-1"><i class="fa-solid fa-key me-1 text-warning"></i> Instant Certificate Verifier</label>
+                                    <div class="input-group input-group-sm mb-2">
+                                        <input type="text" id="certInputVal" class="form-control" value="UC-cf294d4a-4d56-40B8-BB03-7e0c7f632f03" placeholder="Enter Certificate ID...">
+                                        <button class="btn btn-primary" onclick="verifyCertId()"><i class="fa-solid fa-shield-halved me-1"></i> Verify</button>
+                                    </div>
+                                    <div id="certVerifyResult" class="small fw-semibold text-success"><i class="fa-solid fa-circle-check me-1"></i> Status: Authentic Certificate Issued to Kavish Patel.</div>
                                 </div>
                             </div>
 
-                            <div class="d-flex align-items-center mb-4">
-                                <div class="social-link me-3 bg-primary bg-opacity-10 text-accent"><i class="fa-solid fa-location-dot"></i></div>
-                                <div>
-                                    <small class="text-secondary d-block">Location</small>
-                                    <span class="fw-semibold">Indus University, Ahmedabad, Gujarat, India</span>
-                                </div>
-                            </div>
-
-                            <div class="d-flex align-items-center mb-4">
-                                <div class="social-link me-3 bg-primary bg-opacity-10 text-accent"><i class="fa-solid fa-user-graduate"></i></div>
-                                <div>
-                                    <small class="text-secondary d-block">Department</small>
-                                    <span class="fw-semibold">Computer Science & Engineering</span>
+                            <div class="col-lg-5 text-center">
+                                <div class="p-4 bg-white text-dark rounded shadow position-relative text-start" style="font-family: serif; font-size: 0.75rem;">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h4 class="fw-bold mb-0 text-dark" style="font-family: sans-serif;">ûdemy</h4>
+                                        <span class="text-muted" style="font-size: 0.6rem;">UC-cf294d4a</span>
+                                    </div>
+                                    <div class="text-muted text-uppercase fw-bold" style="font-size: 0.55rem;">CERTIFICATE OF COMPLETION</div>
+                                    <h5 class="fw-bold text-dark my-2" style="font-family: sans-serif;">The Complete Full-Stack Web Development Bootcamp</h5>
+                                    <div class="text-muted mb-3" style="font-size: 0.6rem;">Instructor: Dr. Angela Yu</div>
+                                    <div class="border-top pt-2">
+                                        <div class="fw-bold text-dark fs-6 text-uppercase" style="font-family: sans-serif;">KAVISH PATEL</div>
+                                        <div class="text-muted" style="font-size: 0.6rem;">Date: Sept. 14, 2025 • Length: 61.5 total hours</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                        <div>
-                            <h5 class="fw-bold mb-3">Follow & Connect</h5>
-                            <div class="d-flex gap-2">
-                                <a href="https://github.com" target="_blank" class="social-link" title="GitHub"><i class="fa-brands fa-github"></i></a>
-                                <a href="https://linkedin.com" target="_blank" class="social-link" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                                <a href="https://twitter.com" target="_blank" class="social-link" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="text-uppercase tracking-wider text-primary fw-bold small">Direct Communication</span>
+                <h2 class="display-6 fw-bold">Get In Touch With Kavish</h2>
+                <div class="mx-auto mt-2" style="width: 60px; height: 4px; background: var(--primary-gradient); border-radius: 2px;"></div>
+            </div>
+
+            <div class="row justify-content-center gy-4">
+                <div class="col-lg-5">
+                    <div class="glass-card p-4 p-md-5 h-100">
+                        <h4 class="fw-bold mb-3">Contact Details</h4>
+                        <p class="text-body-secondary small mb-4">Feel free to connect regarding software internships, full-stack projects, or developer inquiries.</p>
+
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
+                                <i class="fa-solid fa-envelope fs-5"></i>
+                            </div>
+                            <div>
+                                <div class="small text-body-secondary">Email</div>
+                                <div class="fw-semibold">kavishpatel@indusuni.ac.in</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="p-3 rounded-circle bg-success bg-opacity-10 text-success">
+                                <i class="fa-solid fa-building-columns fs-5"></i>
+                            </div>
+                            <div>
+                                <div class="small text-body-secondary">Institution</div>
+                                <div class="fw-semibold">Indus University, Gujarat</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                            <div class="p-3 rounded-circle bg-info bg-opacity-10 text-info">
+                                <i class="fa-solid fa-graduation-cap fs-5"></i>
+                            </div>
+                            <div>
+                                <div class="small text-body-secondary">Branch & Performance</div>
+                                <div class="fw-semibold">B.Tech CSE (Last Sem CGPA: 6.58)</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-7">
-                    <div class="custom-card p-4 p-md-5">
-                        <form id="contactForm" onsubmit="handleFormSubmit(event)" novalidate>
+                    <div class="glass-card p-4 p-md-5">
+                        <h4 class="fw-bold mb-4"><i class="fa-solid fa-paper-plane me-2 text-primary"></i>Send Message</h4>
+                        <form id="contactForm" novalidate>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="name" class="form-label fw-semibold">Your Name</label>
-                                    <input type="text" class="form-control" id="name" placeholder="John Doe" required>
-                                    <div class="invalid-feedback">Please enter your name.</div>
+                                    <label for="name" class="form-label small fw-semibold">Your Name</label>
+                                    <input type="text" class="form-control glass-card border-secondary border-opacity-25" id="name" required placeholder="John Doe">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="email" class="form-label fw-semibold">Your Email</label>
-                                    <input type="email" class="form-control" id="email" placeholder="john@example.com" required>
-                                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                                    <label for="email" class="form-label small fw-semibold">Email Address</label>
+                                    <input type="email" class="form-control glass-card border-secondary border-opacity-25" id="email" required placeholder="name@example.com">
                                 </div>
                                 <div class="col-12">
-                                    <label for="subject" class="form-label fw-semibold">Subject</label>
-                                    <input type="text" class="form-control" id="subject" placeholder="Project Inquiry / Collaboration" required>
-                                    <div class="invalid-feedback">Please specify a subject.</div>
+                                    <label for="message" class="form-label small fw-semibold">Message</label>
+                                    <textarea class="form-control glass-card border-secondary border-opacity-25" id="message" rows="4" required placeholder="Hello Kavish..."></textarea>
                                 </div>
-                                <div class="col-12">
-                                    <label for="message" class="form-label fw-semibold">Message</label>
-                                    <textarea class="form-control" id="message" rows="5" placeholder="Hi Kavish, I would like to discuss..." required></textarea>
-                                    <div class="invalid-feedback">Please enter your message.</div>
-                                </div>
-                                <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-accent w-100 py-3">
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-gradient btn-lg w-100 rounded-3 fw-bold fs-6">
                                         <i class="fa-solid fa-paper-plane me-2"></i>Send Message
                                     </button>
                                 </div>
@@ -900,48 +922,109 @@
         </div>
     </section>
 
-    <footer class="py-4 border-top border-secondary border-opacity-20" style="background-color: var(--bg-secondary);">
-        <div class="container">
-            <div class="row align-items-center gy-3 text-center text-md-start">
-                <div class="col-md-6">
-                    <p class="mb-0 text-secondary">
-                        &copy; <span id="currentYear"></span> <strong>Kavish Patel</strong>. All rights reserved. Built with Bootstrap 5 & JavaScript.
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="d-inline-flex gap-3">
-                        <a href="#about" class="text-secondary text-decoration-none small">About</a>
-                        <a href="#projects" class="text-secondary text-decoration-none small">Projects</a>
-                        <a href="#education" class="text-secondary text-decoration-none small">Education</a>
-                        <a href="#contact" class="text-secondary text-decoration-none small">Contact</a>
+    <!-- Interactive CLI Modal -->
+    <div class="modal fade" id="terminalModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 bg-transparent">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="rounded-circle bg-danger d-inline-block" style="width: 12px; height: 12px;"></span>
+                            <span class="rounded-circle bg-warning d-inline-block" style="width: 12px; height: 12px;"></span>
+                            <span class="rounded-circle bg-success d-inline-block" style="width: 12px; height: 12px;"></span>
+                            <span class="small text-muted ms-2">kavish@indus-cse:~</span>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white small" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="terminal-body" id="terminalLog">
+                        <div class="text-success">Welcome to Kavish Patel's Interactive Terminal CLI v1.0.0!</div>
+                        <div>Type <span class="text-warning">'help'</span> to view available commands.</div>
+                        <br>
+                    </div>
+                    <div class="px-3 pb-3">
+                        <div class="terminal-input-line">
+                            <span class="text-success">kavish@portfolio:~$</span>
+                            <input type="text" id="terminalInput" autocomplete="off" placeholder="Type a command...">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
 
-    <!-- Back to top button -->
-    <button class="btn-back-to-top" id="backToTopBtn" onclick="scrollToTop()" title="Back to top">
-        <i class="fa-solid fa-arrow-up"></i>
-    </button>
-
-    <!-- Project Details Modal -->
-    <div class="modal fade" id="projectModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header border-bottom border-secondary border-opacity-20 p-4">
-                    <h5 class="modal-title fw-bold" id="modalTitle">Project Details</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Recruiter Skill Match Modal -->
+    <div class="modal fade" id="recruiterModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-card border-0">
+                <div class="modal-header border-bottom border-secondary border-opacity-25">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-sliders me-2 text-primary"></i>Recruiter Stack Matcher</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <p id="modalDescription" class="text-secondary leading-relaxed mb-4"></p>
-                    <h6 class="fw-bold mb-2">Technologies Used:</h6>
-                    <div id="modalBadges" class="d-flex flex-wrap gap-2 mb-4"></div>
+                    <p class="small text-body-secondary mb-3">Select requirements to calculate Kavish's compatibility score:</p>
+
+                    <div class="d-flex flex-column gap-2 mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input match-check" type="checkbox" id="m1" value="25" checked onchange="calcMatchScore()">
+                            <label class="form-check-label small" for="m1">HTML5 / CSS3 / Bootstrap 5 Design</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input match-check" type="checkbox" id="m2" value="25" checked onchange="calcMatchScore()">
+                            <label class="form-check-label small" for="m2">JavaScript (ES6+) & React</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input match-check" type="checkbox" id="m3" value="25" checked onchange="calcMatchScore()">
+                            <label class="form-check-label small" for="m3">Node.js & Express Backend APIs</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input match-check" type="checkbox" id="m4" value="25" checked onchange="calcMatchScore()">
+                            <label class="form-check-label small" for="m4">SQL / PostgreSQL & MongoDB Databases</label>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded glass-card text-center border border-secondary border-opacity-25">
+                        <div class="small text-body-secondary">Candidate Stack Match Score:</div>
+                        <div class="display-5 fw-bold text-gradient" id="matchScoreVal">100%</div>
+                        <div class="small text-success mt-1" id="matchStatusMsg"><i class="fa-solid fa-circle-check me-1"></i> Perfect Fit for Full-Stack Role!</div>
+                    </div>
                 </div>
-                <div class="modal-footer border-top border-secondary border-opacity-20 p-3">
-                    <button type="button" class="btn btn-outline-custom" data-bs-dismiss="modal">Close</button>
-                    <a href="https://github.com" target="_blank" class="btn btn-accent"><i class="fa-brands fa-github me-1"></i> View Repository</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Interactive Chatbot Widget -->
+    <div id="chatbotWidget">
+        <div class="chat-box glass-card border border-secondary border-opacity-25 shadow-lg" id="chatBox">
+            <div class="p-3 bg-dark text-white border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-robot text-primary"></i>
+                    <span class="fw-bold small">Ask Kavish AI Assistant</span>
                 </div>
+                <button class="btn-close btn-close-white btn-sm" onclick="toggleChatbot()"></button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg bot">Hi! I am Kavish's automated AI assistant. How can I help you today?</div>
+            </div>
+            <div class="p-2 border-top border-secondary border-opacity-25 d-flex gap-1 bg-body-tertiary">
+                <button class="btn btn-sm btn-outline-secondary flex-grow-1 text-truncate" style="font-size: 0.72rem;" onclick="botAsk('education')">Graduation?</button>
+                <button class="btn btn-sm btn-outline-secondary flex-grow-1 text-truncate" style="font-size: 0.72rem;" onclick="botAsk('cgpa')">CGPA?</button>
+                <button class="btn btn-sm btn-outline-secondary flex-grow-1 text-truncate" style="font-size: 0.72rem;" onclick="botAsk('cert')">Udemy Cert?</button>
+            </div>
+        </div>
+        <div class="chat-btn" onclick="toggleChatbot()" title="Ask Kavish Assistant">
+            <i class="fa-solid fa-comments"></i>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1200;">
+        <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-circle-check fs-5"></i>
+                    <span id="toastMessage">Action completed successfully!</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>
@@ -950,159 +1033,318 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Set dynamic copyright year
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        let soundEnabled = false;
+        let audioCtx = null;
 
-        // Theme Toggle Logic
-        function toggleTheme() {
-            const htmlTag = document.documentElement;
-            const currentTheme = htmlTag.getAttribute('data-bs-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            htmlTag.setAttribute('data-bs-theme', newTheme);
-            
-            const themeIcon = document.getElementById('themeIcon');
-            const themeText = document.getElementById('themeText');
-            
-            if (newTheme === 'light') {
-                themeIcon.className = 'fa-solid fa-sun me-2';
-                themeText.textContent = 'Light';
-            } else {
-                themeIcon.className = 'fa-solid fa-moon me-2';
-                themeText.textContent = 'Dark';
+        function playBeep(freq = 440, type = 'sine', duration = 0.08) {
+            if (!soundEnabled) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        // Particle Canvas
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+                this.radius = Math.random() * 1.8 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(100, 116, 139, 0.35)';
+                ctx.fill();
             }
         }
 
-        // Typing Effect Logic
-        const typingPhrases = [
-            "CSE Student @ Indus University",
-            "Full-Stack Web Developer",
-            "Problem Solver & Tech Enthusiast",
-            "C++ | Java | Python | JS"
-        ];
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        const typingElement = document.getElementById("typingEffect");
-
-        function typeEffect() {
-            const currentPhrase = typingPhrases[phraseIndex];
-            
-            if (isDeleting) {
-                typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            let typeSpeed = isDeleting ? 40 : 80;
-
-            if (!isDeleting && charIndex === currentPhrase.length) {
-                typeSpeed = 2000; // Pause at end of text
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % typingPhrases.length;
-                typeSpeed = 500;
-            }
-
-            setTimeout(typeEffect, typeSpeed);
+        for (let i = 0; i < 45; i++) {
+            particles.push(new Particle());
         }
 
-        // Project Filter Function
-        function filterProjects(category) {
-            const buttons = document.querySelectorAll('.btn-filter');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
 
-            const items = document.querySelectorAll('.project-item');
-            items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
-                    item.style.display = 'block';
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 110) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(100, 116, 139, ${0.25 * (1 - dist / 110)})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sound Toggle
+            const soundBtn = document.getElementById('soundToggle');
+            const soundIcon = document.getElementById('soundIcon');
+            soundBtn.addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                if (soundEnabled) {
+                    soundIcon.className = 'fa-solid fa-volume-high text-success';
+                    playBeep(600, 'sine', 0.1);
                 } else {
-                    item.style.display = 'none';
+                    soundIcon.className = 'fa-solid fa-volume-xmark';
                 }
             });
-        }
 
-        // Open Project Modal
-        function openProjectModal(title, description, techArray) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalDescription').textContent = description;
-            
-            const badgesContainer = document.getElementById('modalBadges');
-            badgesContainer.innerHTML = '';
-            
-            techArray.forEach(tech => {
-                const badge = document.createElement('span');
-                badge.className = 'badge bg-primary bg-opacity-10 text-accent p-2';
-                badge.textContent = tech;
-                badgesContainer.appendChild(badge);
+            // Theme Switcher
+            const themeToggleBtn = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            themeToggleBtn.addEventListener('click', () => {
+                playBeep(500, 'triangle');
+                const htmlTag = document.documentElement;
+                const newTheme = htmlTag.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                htmlTag.setAttribute('data-bs-theme', newTheme);
+                themeIcon.className = newTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun text-warning';
             });
 
-            const modal = new bootstrap.Modal(document.getElementById('projectModal'));
-            modal.show();
-        }
+            // Typing Effect
+            const typingElement = document.getElementById('typingElement');
+            const phrases = [
+                'studying B.Tech CSE at Indus University',
+                'a Certified Full-Stack Web Developer',
+                'Angela Yu Bootcamp Graduate',
+                'passionate about Clean Code & Web Tech'
+            ];
+            let pIdx = 0, cIdx = 0, isDeleting = false;
 
-        // Form Submission with Feedback Message
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
+            function typeLoop() {
+                const current = phrases[pIdx];
+                typingElement.textContent = isDeleting ? current.substring(0, cIdx - 1) : current.substring(0, cIdx + 1);
+                cIdx = isDeleting ? cIdx - 1 : cIdx + 1;
 
-            if (!form.checkValidity()) {
-                event.stopPropagation();
-                form.classList.add('was-validated');
-                return;
+                let speed = isDeleting ? 35 : 75;
+                if (!isDeleting && cIdx === current.length) {
+                    speed = 2200;
+                    isDeleting = true;
+                } else if (isDeleting && cIdx === 0) {
+                    isDeleting = false;
+                    pIdx = (pIdx + 1) % phrases.length;
+                    speed = 400;
+                }
+                setTimeout(typeLoop, speed);
             }
+            typeLoop();
 
-            // Create notification UI instead of browser alert
-            const alertBox = document.createElement('div');
-            alertBox.className = 'alert alert-success alert-dismissible fade show mt-3';
-            alertBox.role = 'alert';
-            alertBox.innerHTML = `
-                <i class="fa-solid fa-circle-check me-2"></i>
-                Thank you, ${document.getElementById('name').value}! Your message has been sent successfully.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            `;
+            // Run initial playground code
+            runPlaygroundCode();
 
-            form.appendChild(alertBox);
-            form.reset();
-            form.classList.remove('was-validated');
+            // Terminal Input Handler
+            const terminalInput = document.getElementById('terminalInput');
+            terminalInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    playBeep(700, 'sine');
+                    handleTerminalCommand(terminalInput.value.trim());
+                    terminalInput.value = '';
+                }
+            });
+
+            // Contact Form Submission
+            const contactForm = document.getElementById('contactForm');
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!contactForm.checkValidity()) {
+                    contactForm.classList.add('was-validated');
+                    return;
+                }
+                playBeep(800, 'sine', 0.2);
+                showToast('Thank you! Your message has been sent to Kavish Patel.');
+                contactForm.reset();
+                contactForm.classList.remove('was-validated');
+            });
+        });
+
+        function scrollToSection(id) {
+            playBeep(400);
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Download Resume Trigger
-        function downloadResume() {
-            const resumeText = "Kavish Patel - Computer Science & Engineering Student\nIndus University\nSkills: Python, JS, C++, Java, React, SQL";
-            const blob = new Blob([resumeText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Kavish_Patel_Resume.txt';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        function toggleAcademicDetail(id) {
+            playBeep(450);
+            const el = document.getElementById(id);
+            el.classList.toggle('d-none');
         }
 
-        // Back to top & Navbar scroll highlight
-        window.onscroll = function() {
-            const backToTopBtn = document.getElementById("backToTopBtn");
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                backToTopBtn.classList.add("show");
+        function updateCgpaCalc(val) {
+            document.getElementById('cgpaVal').textContent = parseFloat(val).toFixed(2);
+            // standard conversion formula: CGPA * 9.5
+            const perc = (parseFloat(val) * 9.5).toFixed(2);
+            document.getElementById('percVal').textContent = `${perc}%`;
+        }
+
+        function filterSkills() {
+            const query = document.getElementById('skillSearch').value.toLowerCase();
+            const items = document.querySelectorAll('.skill-card-item');
+            items.forEach(item => {
+                const match = item.getAttribute('data-skill').toLowerCase().includes(query);
+                item.style.display = match ? 'block' : 'none';
+            });
+        }
+
+        function runPlaygroundCode() {
+            playBeep(650);
+            const code = document.getElementById('codeEditor').value;
+            const iframe = document.getElementById('codePreview');
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            doc.open();
+            doc.write(code);
+            doc.close();
+        }
+
+        function verifyCertId() {
+            playBeep(520);
+            const val = document.getElementById('certInputVal').value.trim();
+            const res = document.getElementById('certVerifyResult');
+            if (val === 'UC-cf294d4a-4d56-40B8-BB03-7e0c7f632f03') {
+                res.className = 'small fw-semibold text-success';
+                res.innerHTML = '<i class="fa-solid fa-circle-check me-1"></i> Status: Official Udemy Certificate verified for Kavish Patel!';
             } else {
-                backToTopBtn.classList.remove("show");
+                res.className = 'small fw-semibold text-danger';
+                res.innerHTML = '<i class="fa-solid fa-circle-xmark me-1"></i> Invalid Certificate ID. Please try default ID: UC-cf294d4a-4d56-40B8-BB03-7e0c7f632f03';
             }
-        };
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Initialize Typing Effect on Load
-        window.onload = function() {
-            typeEffect();
-        };
+        function calcMatchScore() {
+            playBeep(500);
+            const checks = document.querySelectorAll('.match-check:checked');
+            let score = 0;
+            checks.forEach(c => score += parseInt(c.value));
+            document.getElementById('matchScoreVal').textContent = `${score}%`;
+            
+            const msg = document.getElementById('matchStatusMsg');
+            if (score >= 75) {
+                msg.className = 'small text-success mt-1';
+                msg.innerHTML = '<i class="fa-solid fa-circle-check me-1"></i> Excellent candidate match for Full-Stack role!';
+            } else if (score >= 50) {
+                msg.className = 'small text-warning mt-1';
+                msg.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i> Good potential for junior / hybrid developer roles.';
+            } else {
+                msg.className = 'small text-danger mt-1';
+                msg.innerHTML = '<i class="fa-solid fa-circle-xmark me-1"></i> Select more required skills above.';
+            }
+        }
+
+        // Chatbot Assistant Logic
+        function toggleChatbot() {
+            playBeep(450);
+            const chatBox = document.getElementById('chatBox');
+            chatBox.classList.toggle('active');
+        }
+
+        function botAsk(topic) {
+            playBeep(550);
+            const chatMessages = document.getElementById('chatMessages');
+            let userQ = '', botA = '';
+
+            if (topic === 'education') {
+                userQ = 'Where does Kavish study?';
+                botA = 'Kavish Patel studies B.Tech Computer Science Engineering (CSE) at Indus University!';
+            } else if (topic === 'cgpa') {
+                userQ = 'What are Kavish\'s academic scores?';
+                botA = 'Kavish scored 75% in 10th, 60% in 12th, and achieved a 6.58 CGPA in his last semester at Indus University.';
+            } else if (topic === 'cert') {
+                userQ = 'Tell me about his Full-Stack Certificate.';
+                botA = 'Kavish completed "The Complete Full-Stack Web Development Bootcamp" by Dr. Angela Yu on Udemy (61.5 total hours, Sept. 14, 2025). Cert ID: UC-cf294d4a-4d56-40B8-BB03-7e0c7f632f03!';
+            }
+
+            chatMessages.innerHTML += `<div class="chat-msg user">${userQ}</div>`;
+            setTimeout(() => {
+                chatMessages.innerHTML += `<div class="chat-msg bot">${botA}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 300);
+        }
+
+        // CLI Terminal Execution Logic
+        function handleTerminalCommand(cmd) {
+            const log = document.getElementById('terminalLog');
+            const cleanCmd = cmd.toLowerCase().trim();
+            log.innerHTML += `<div><span class="text-success">kavish@portfolio:~$</span> ${cmd}</div>`;
+
+            let reply = '';
+            switch (cleanCmd) {
+                case 'help':
+                    reply = 'Available Commands: <span class="text-warning">about, education, cgpa, cert, skills, contact, clear, theme</span>';
+                    break;
+                case 'about':
+                    reply = 'Kavish Patel - B.Tech CSE student at Indus University specializing in Full-Stack Web Development.';
+                    break;
+                case 'education':
+                    reply = 'Indus University - B.Tech CSE | 12th HSC (60%) | 10th SSC (75%)';
+                    break;
+                case 'cgpa':
+                    reply = 'Last Semester CGPA: 6.58 / 10 at Indus University.';
+                    break;
+                case 'cert':
+                    reply = 'Udemy Certificate: The Complete Full-Stack Web Development Bootcamp by Dr. Angela Yu (61.5 Hours). ID: UC-cf294d4a-4d56-40B8-BB03-7e0c7f632f03';
+                    break;
+                case 'skills':
+                    reply = 'HTML5, CSS3, JavaScript ES6+, Bootstrap 5, Node.js, Express, React, PostgreSQL, MongoDB, Git.';
+                    break;
+                case 'contact':
+                    reply = 'Email: kavishpatel@indusuni.ac.in | Institution: Indus University, Gujarat';
+                    break;
+                case 'clear':
+                    log.innerHTML = '';
+                    return;
+                default:
+                    reply = `Command not recognized: '${cmd}'. Type <span class="text-warning">'help'</span> for a list of commands.`;
+            }
+
+            log.innerHTML += `<div class="text-info">${reply}</div><br>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function showToast(msg) {
+            document.getElementById('toastMessage').textContent = msg;
+            const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+            toast.show();
+        }
     </script>
 </body>
 </html>
